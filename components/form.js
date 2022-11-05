@@ -16,7 +16,21 @@ const [imcList, setImcList] = useState([])
 function imcCalculator() {
     let heightFormat = height.replace(",",".")
     let totalImc = (weight/(heightFormat*heightFormat)).toFixed(2)
-    setImcList ((arr) => [...arr, {id:new Date().getTime(), imc:totalImc }])
+    let classification
+     if (totalImc < 18.5) {
+        classification = "Abaixo do peso"
+    } else if (totalImc >= 18.5 && totalImc < 25) {
+        classification = "Peso normal"
+    } else if (totalImc >= 25 && totalImc < 30) {
+        classification = "Acima do peso"
+    } else if (totalImc >= 30 && totalImc < 35) {
+        classification = "Obesidade"
+    } else if (totalImc >= 35 && totalImc < 40) {
+        classification = "Obesidade severa" 
+    } else {
+        classification = "Obesidade mórbida"
+    }
+    setImcList ((arr) => [...arr, {id:new Date().getTime(), imc:totalImc, level:classification }])
     setImc(totalImc)
 }
 
@@ -81,6 +95,7 @@ function validationImc() {
             return(
                 <Text style={formcss.resultImcItem}>
                    Resultado IMC = <Text style={formcss.textResultItemList}>{item.imc}</Text>
+                   <Text style={formcss.textLevel}> ({item.level})</Text>
                 </Text>
             )
         }}
